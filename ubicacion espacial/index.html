@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Pelota Viajera - Aprendizaje Espacial y Cognitivo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Contenedor principal de la aplicación -->
+  <div id="app" class="app-container">
+    
+    <!-- HEADER SUPERIOR -->
+    <header class="app-header">
+      <div class="logo-area">
+        <span class="ball-logo-icon">⚽✨</span>
+        <div class="title-group">
+          <h1>La Pelota Viajera</h1>
+          <p class="subtitle">Aventura de Orientación Espacial y Desarrollo Cognitivo</p>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <div class="kid-badge" id="currentKidBadge" style="display:none;">
+          <span class="avatar-icon" id="badgeAvatar">👦</span>
+          <span class="kid-name" id="badgeName">Amiguito</span>
+        </div>
+        <button id="btnCameraToggle" class="btn-icon" title="Cámara Interactiva (Movimiento)">
+          <span class="icon">📹</span>
+          <span class="status-dot off" id="camStatusDot"></span>
+        </button>
+        <button id="btnVoiceToggle" class="btn-icon" title="Comandos de Voz">
+          <span class="icon">🎙️</span>
+          <span class="status-dot off" id="micStatusDot"></span>
+        </button>
+        <button id="btnAudioToggle" class="btn-icon" title="Sonidos">
+          <span class="icon" id="audioIcon">🔊</span>
+        </button>
+        <button id="btnHelp" class="btn-icon" title="Instrucciones">
+          <span class="icon">❓</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- PANTALLA 1: REGISTRO / PERFIL DEL NIÑO -->
+    <section id="screenProfile" class="screen active">
+      <div class="profile-card">
+        <div class="hero-character">
+          <div class="bouncing-ball-intro">
+            <div class="ball-face">
+              <span class="eye left"></span>
+              <span class="eye right"></span>
+              <span class="mouth happy"></span>
+            </div>
+          </div>
+          <div class="speech-bubble-intro">
+            ¡Hola! Soy <strong>Bolita la Pelota Viajera</strong>. ¡Juntos aprenderemos arriba, abajo, izquierda y derecha con tu voz y <strong>la cámara de tu computador</strong>! 🌟
+          </div>
+        </div>
+
+        <form id="kidProfileForm" class="profile-form">
+          <h2>¿Quién va a jugar hoy?</h2>
+          
+          <div class="form-group">
+            <label for="kidNameInput">Nombre o Apodo:</label>
+            <input type="text" id="kidNameInput" placeholder="Ej: Mateo, Sofía, Lucas..." required maxlength="25" autofocus>
+          </div>
+
+          <div class="form-group">
+            <label for="kidAgeSelect">Edad del explorador(a):</label>
+            <select id="kidAgeSelect" required>
+              <option value="4">4 años (Inicial / Preescolar)</option>
+              <option value="5" selected>5 años (Transición / Jardín)</option>
+              <option value="6">6 años (Primero Primaria)</option>
+              <option value="7">7 años (Segundo Primaria)</option>
+              <option value="8">8 años o más (Refuerzo Cognitivo)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Elige tu avatar:</label>
+            <div class="avatar-selector" id="avatarSelector">
+              <button type="button" class="avatar-opt active" data-avatar="👦">👦</button>
+              <button type="button" class="avatar-opt" data-avatar="👧">👧</button>
+              <button type="button" class="avatar-opt" data-avatar="🚀">🚀</button>
+              <button type="button" class="avatar-opt" data-avatar="🦁">🦁</button>
+              <button type="button" class="avatar-opt" data-avatar="🦄">🦄</button>
+              <button type="button" class="avatar-opt" data-avatar="⭐">⭐</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="controlModeSelect">🎮 ¿Cómo quieres jugar?:</label>
+            <select id="controlModeSelect">
+              <option value="camera" selected>📹 Cámara Interactiva (Mueve tu cuerpo frente a la pantalla)</option>
+              <option value="hybrid">⭐ Modo Híbrido (Cámara + Voz por Micrófono + Botones)</option>
+              <option value="voice">🎙️ Comandos de Voz (Habla por el Micrófono)</option>
+              <option value="touch">👆 Botones Táctiles y Teclado (↑ ↓ ← →)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="gameModeSelect">Modo de Aventura:</label>
+            <select id="gameModeSelect">
+              <option value="adventure" selected>🗺️ Modo 1: Aventura Guiada (Aprende y Mueve a Bolita)</option>
+              <option value="memory">🧠 Modo 2: Secuencia y Memoria de Trabajo (Repite el camino)</option>
+              <option value="speed">⚡ Modo 3: Reacción Espacial Rápida (Atención y Reflejos)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="difficultySelect">Nivel de Dificultad:</label>
+            <select id="difficultySelect">
+              <option value="easy">⭐ Fácil (Movimientos amplios, 10s para moverse, guías visuales grandes)</option>
+              <option value="medium" selected>⭐⭐ Medio (Arriba, Abajo, Izq, Der, 6s para moverse, precisión)</option>
+              <option value="hard">⭐⭐⭐ Difícil (Reacción ágil 3.5s, cuadrícula 5x5, obstáculos y giros)</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-primary btn-bounce">
+            <span>¡Comenzar la Aventura!</span>
+            <span class="btn-icon-right">🚀</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- PANTALLA 2: ZONA DE JUEGO PRINCIPAL -->
+    <section id="screenGame" class="screen">
+      <div class="game-top-bar">
+        <div class="stat-pill score-pill">
+          <span class="stat-label">Puntos:</span>
+          <span class="stat-val" id="scoreDisplay">0</span>
+        </div>
+        <div class="stat-pill round-pill">
+          <span class="stat-label">Misión:</span>
+          <span class="stat-val" id="missionDisplay">1 / 10</span>
+        </div>
+        <div class="stat-pill streak-pill">
+          <span class="stat-label">Racha:</span>
+          <span class="stat-val" id="streakDisplay">🔥 0</span>
+        </div>
+        <div class="stat-pill timer-pill" id="timerPill">
+          <span class="stat-label">Tiempo:</span>
+          <span class="stat-val" id="timerDisplay">--</span>
+        </div>
+        <button id="btnEndEarly" class="btn-secondary-sm" title="Terminar y ver reporte cognitivo">
+          📊 Terminar y Reporte
+        </button>
+      </div>
+
+      <!-- BANNER DE LA VOZ DE BOLITA -->
+      <div class="instruction-banner" id="instructionBanner">
+        <div class="ball-avatar-speaking" id="ballSpeakerAvatar">
+          <div class="mini-ball-icon">⚽</div>
+          <span class="sound-wave-icon" id="speakingWave">💬</span>
+        </div>
+        <div class="instruction-text-container">
+          <div class="instruction-title">Bolita te dice:</div>
+          <div class="instruction-main" id="instructionText">¡Cargando la primera misión!</div>
+        </div>
+        <button id="btnRepeatInstruction" class="btn-repeat-voice" title="Repetir lo que dijo Bolita">
+          🔊 Repetir
+        </button>
+      </div>
+
+      <!-- FEEDBACK DE RECONOCIMIENTO DE VOZ -->
+      <div class="voice-feedback-bar" id="voiceFeedbackBar" style="display:none;">
+        <span class="pulse-mic">🎙️</span>
+        <span class="voice-listening-label">Escuchando tu voz...</span>
+        <span class="voice-heard-word" id="voiceHeardWord">Di: "Arriba", "Abajo", "Izquierda" o "Derecha"</span>
+      </div>
+
+      <!-- ESCENARIO INTERACTIVO DUAL: TABLERO + CÁMARA CORPORAL -->
+      <div class="interactive-stage-container">
+        <!-- TABLERO DE JUEGO (CUADRÍCULA VISOESPACIAL) -->
+        <div class="board-wrapper">
+          <div class="board-environment" id="boardEnvironment">
+            <!-- Indicadores de Orientación en los Bordes para Apoyo Visual -->
+            <div class="edge-indicator edge-up">⬆️ ARRIBA</div>
+            <div class="edge-indicator edge-down">⬇️ ABAJO</div>
+            <div class="edge-indicator edge-left">⬅️ IZQUIERDA</div>
+            <div class="edge-indicator edge-right">DERECHA ➡️</div>
+
+            <div id="gameBoard" class="game-board">
+              <!-- Celdas generadas dinámicamente -->
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL DE CÁMARA INTERACTIVA (DETECCIÓN DE MOVIMIENTO) -->
+        <div class="camera-panel-wrapper" id="cameraPanelWrapper">
+          <div class="camera-panel-header">
+            <div class="cam-title-group">
+              <span class="cam-icon">✨</span>
+              <span class="cam-title">Espejo Mágico AR</span>
+            </div>
+            <div class="camera-header-right">
+              <button type="button" id="btnExpandCamera" class="btn-expand-cam" title="Cambiar tamaño del espejo">
+                🔍 Tamaño
+              </button>
+              <span class="camera-status-badge inactive" id="cameraStatusBadge">Cámara Lista</span>
+            </div>
+          </div>
+
+          <div class="camera-viewbox">
+            <video id="webcamVideo" autoplay playsinline muted></video>
+            <canvas id="cameraOverlayCanvas" width="320" height="240"></canvas>
+          </div>
+
+          <div class="camera-tip-text" id="cameraTipText">
+            <span>✨ <b>Mueve tu cuerpo frente a la cámara:</b> salta hacia arriba, agáchate hacia abajo o muévete a los lados.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTROLES DIRECCIONALES TÁCTILES / BOTONES GIGANTES -->
+      <div class="controls-container">
+        <div class="controls-helper-hint">
+          <span>🎮 Usa los botones, las teclas <b>↑ ↓ ← →</b> o <b>tu voz</b> diciendo la dirección:</span>
+        </div>
+
+        <div class="dpad-grid">
+          <div class="dpad-empty"></div>
+          <button class="dpad-btn btn-up" id="btnMoveUp" data-dir="up">
+            <span class="dir-icon">⬆️</span>
+            <span class="dir-text">ARRIBA</span>
+          </button>
+          <div class="dpad-empty"></div>
+
+          <button class="dpad-btn btn-left" id="btnMoveLeft" data-dir="left">
+            <span class="dir-icon">⬅️</span>
+            <span class="dir-text">IZQUIERDA</span>
+          </button>
+          
+          <div class="dpad-center" id="dpadCenterInfo">
+            <div class="ball-mini-center">⚽</div>
+          </div>
+
+          <button class="dpad-btn btn-right" id="btnMoveRight" data-dir="right">
+            <span class="dir-icon">➡️</span>
+            <span class="dir-text">DERECHA</span>
+          </button>
+
+          <div class="dpad-empty"></div>
+          <button class="dpad-btn btn-down" id="btnMoveDown" data-dir="down">
+            <span class="dir-icon">⬇️</span>
+            <span class="dir-text">ABAJO</span>
+          </button>
+          <div class="dpad-empty"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANTALLA 3: REPORTE COGNITIVO DETALLADO -->
+    <section id="screenReport" class="screen">
+      <div class="report-container" id="printableReport">
+        
+        <!-- ENCABEZADO DEL REPORTE -->
+        <div class="report-header">
+          <div class="report-header-title">
+            <div class="report-badge-clinic">EVALUACIÓN PSICOPEDAGÓGICA Y NEUROCOGNITIVA</div>
+            <h2>Informe de Desempeño Espacial y Cognitivo</h2>
+            <p class="report-date" id="reportDate">Fecha de evaluación: --/--/----</p>
+          </div>
+          <div class="report-header-actions no-print">
+            <button id="btnPrintReport" class="btn-action-report btn-print">
+              🖨️ Imprimir / Guardar PDF
+            </button>
+            <button id="btnPlayAgain" class="btn-action-report btn-restart">
+              🔄 Jugar de Nuevo
+            </button>
+          </div>
+        </div>
+
+        <!-- FICHA DEL EXPLORADOR -->
+        <div class="kid-summary-card">
+          <div class="kid-summary-avatar" id="reportAvatar">👦</div>
+          <div class="kid-summary-details">
+            <h3 id="reportKidName">Mateo</h3>
+            <div class="kid-tags">
+              <span class="tag">Edad: <strong id="reportKidAge">5 años</strong></span>
+              <span class="tag">Modo: <strong id="reportGameMode">Aventura Guiada</strong></span>
+              <span class="tag">Dificultad: <strong id="reportDifficulty">Normal</strong></span>
+              <span class="tag">Duración: <strong id="reportDuration">2 min 30 seg</strong></span>
+            </div>
+          </div>
+          <div class="global-score-box">
+            <div class="global-score-number" id="reportGlobalScore">92%</div>
+            <div class="global-score-label">Índice Global de Dominio Espacial</div>
+          </div>
+        </div>
+
+        <!-- METRICAS CLAVE EN CUADRICULA -->
+        <div class="metrics-grid">
+          <!-- Tarjeta 1: Lateralidad Horizontal -->
+          <div class="metric-card">
+            <div class="metric-icon">↔️</div>
+            <div class="metric-content">
+              <h4>Lateralidad (Izquierda / Derecha)</h4>
+              <div class="metric-bar-container">
+                <div class="metric-bar-fill" id="barHorizontal" style="width: 0%;"></div>
+              </div>
+              <div class="metric-stats">
+                <span id="metricHorizontalText">Acierto: 0%</span>
+                <span class="metric-sub" id="metricHorizontalSub">0 aciertos / 0 intentos</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta 2: Orientación Vertical -->
+          <div class="metric-card">
+            <div class="metric-icon">↕️</div>
+            <div class="metric-content">
+              <h4>Orientación Vertical (Arriba / Abajo)</h4>
+              <div class="metric-bar-container">
+                <div class="metric-bar-fill" id="barVertical" style="width: 0%;"></div>
+              </div>
+              <div class="metric-stats">
+                <span id="metricVerticalText">Acierto: 0%</span>
+                <span class="metric-sub" id="metricVerticalSub">0 aciertos / 0 intentos</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta 3: Velocidad de Reacción -->
+          <div class="metric-card">
+            <div class="metric-icon">⏱️</div>
+            <div class="metric-content">
+              <h4>Tiempo de Reacción Psicomotriz</h4>
+              <div class="metric-big-val" id="metricReactionTime">1.4 s</div>
+              <p class="metric-hint" id="metricReactionHint">Velocidad adecuada para su grupo etario</p>
+            </div>
+          </div>
+
+          <!-- Tarjeta 4: Memoria de Trabajo y Atención -->
+          <div class="metric-card">
+            <div class="metric-icon">🧠</div>
+            <div class="metric-content">
+              <h4>Atención y Memoria de Trabajo</h4>
+              <div class="metric-bar-container">
+                <div class="metric-bar-fill fill-purple" id="barMemory" style="width: 0%;"></div>
+              </div>
+              <div class="metric-stats">
+                <span id="metricMemoryText">Precisión: 0%</span>
+                <span class="metric-sub" id="metricMemorySub">Atención sostenida</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta 5: Coordinación Corporal por Cámara -->
+          <div class="metric-card">
+            <div class="metric-icon">📹</div>
+            <div class="metric-content">
+              <h4>Psicomotricidad por Cámara</h4>
+              <div class="metric-big-val" id="metricCameraMoves">0 aciertos</div>
+              <p class="metric-hint" id="metricCameraHint">Movimientos corporales captados por la webcam</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLA DESGLOSADA POR DIRECCIONES ESPECÍFICAS -->
+        <div class="breakdown-section">
+          <h3>📊 Análisis Detallado por Coordenada Espacial</h3>
+          <div class="table-responsive">
+            <table class="direction-breakdown-table">
+              <thead>
+                <tr>
+                  <th>Dirección</th>
+                  <th>Total Peticiones</th>
+                  <th>Aciertos Inmediatos</th>
+                  <th>Errores / Confusiones</th>
+                  <th>Tasa de Éxito</th>
+                  <th>Diagnóstico Rápido</th>
+                </tr>
+              </thead>
+              <tbody id="directionTableBody">
+                <!-- Se inyecta dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- INTERPRETACIÓN PSICOPEDAGÓGICA AUTOMÁTICA -->
+        <div class="pedagogical-analysis-card">
+          <div class="analysis-header">
+            <span class="analysis-icon">📋</span>
+            <h3>Dictamen y Conclusiones del Desarrollo Cognitivo</h3>
+          </div>
+          <div class="analysis-body" id="pedagogicalText">
+            <!-- Análisis generado basado en el desempeño real -->
+          </div>
+        </div>
+
+        <!-- RECOMENDACIONES Y ACTIVIDADES DE REFUERZO -->
+        <div class="recommendations-card">
+          <div class="recommendations-header">
+            <span class="rec-icon">💡</span>
+            <h3>Pautas Didácticas y Ejercicios Recomendados para Casa y Aula</h3>
+          </div>
+          <ul class="recommendations-list" id="recommendationsList">
+            <!-- Pautas personalizadas -->
+          </ul>
+        </div>
+
+        <!-- PIE DEL INFORME -->
+        <div class="report-footer">
+          <p>Herramienta digital de estimulación neurocognitiva y esquema corporal: <strong>La Pelota Viajera</strong>.</p>
+          <p class="legal-note">Este reporte es una herramienta de apoyo pedagógico para observar la psicomotricidad y la orientación espacial en la primera infancia y básica primaria.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- MODAL DE AYUDA E INSTRUCCIONES -->
+    <div id="helpModal" class="modal-overlay" style="display:none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>🌟 ¿Cómo jugar con la Pelota Viajera?</h3>
+          <button class="btn-close-modal" id="btnCloseHelp">✖</button>
+        </div>
+        <div class="modal-body">
+          <div class="help-step">
+            <div class="step-num">1</div>
+            <div class="step-info">
+              <strong>Escucha a Bolita:</strong>
+              <p>La pelota te dirá con su voz hacia dónde viajar (¡Arriba, Abajo, Izquierda o Derecha!).</p>
+            </div>
+          </div>
+          <div class="help-step">
+            <div class="step-num">2</div>
+            <div class="step-info">
+              <strong>Mueve tu Cuerpo, tu Voz o tus Manos:</strong>
+              <p>¡Ponte de pie y muévete frente a la cámara! Salta hacia arriba ⬆️, agáchate hacia abajo ⬇️, o muévete a los lados ⬅️ ➡️. También puedes hablar por el micrófono o tocar los botones.</p>
+            </div>
+          </div>
+          <div class="help-step">
+            <div class="step-num">3</div>
+            <div class="step-info">
+              <strong>Supera los Desafíos:</strong>
+              <p>Lleva la pelota hasta la estrella dorada ⭐ evitando los obstáculos y acumula rachas de aciertos.</p>
+            </div>
+          </div>
+          <div class="help-step">
+            <div class="step-num">4</div>
+            <div class="step-info">
+              <strong>Mira tu Informe Especial:</strong>
+              <p>Al terminar tus misiones, se creará un reporte con tus habilidades espaciales, memoria y consejos para tus profesores o papás.</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-primary" id="btnAcceptHelp">¡Entendido, vamos a jugar!</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST / NOTIFICACIONES FLOTANTES -->
+    <div id="toastNotification" class="toast-popup" style="display:none;"></div>
+
+  </div>
+
+  <!-- SCRIPTS MODULARES -->
+  <script src="audio.js"></script>
+  <script src="speech.js"></script>
+  <script src="camera.js"></script>
+  <script src="report.js"></script>
+  <script src="game.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
